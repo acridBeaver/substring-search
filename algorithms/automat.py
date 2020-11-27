@@ -5,7 +5,6 @@ class Automat(Algorithm):
 
     @staticmethod
     def search(substring, text):
-        # Определяем алфавит
         alphabet = {}
         transition = [{} for i in range(len(substring) + 1)]
         for letter in substring:
@@ -20,7 +19,7 @@ class Automat(Algorithm):
         current_state = 0
         end_state = len(substring)
         for i in range(len(text)):
-            if text[i] in alphabet.keys():  # если такой символ есть в алфавите
+            if text[i] in alphabet.keys():
                 current_state = transition[current_state][text[i]]
             else:
                 current_state = 0

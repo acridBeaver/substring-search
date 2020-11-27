@@ -20,8 +20,6 @@ class BoyerMooreSearch(Algorithm):
         j = 0
         for i in range(len(substring)):
             for j in range(len(substring)):
-                # Запоминаем кол-во символов необходимых для сдвига на
-                # конкретном символе
                 left_edge = len(substring) - i
                 window = len(sub) - j
                 if same(substring[left_edge:], sub[window - i: window]) \

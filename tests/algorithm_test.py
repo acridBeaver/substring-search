@@ -37,7 +37,6 @@ TESTS = [
 
 class TestAlgorithms(unittest.TestCase):
 
-    # Алгоритм должен наследоваться от класса Algorithm
     def test_algorithm_is_algorithm(self):
         for algorithm in ALGORITHMS:
             self.assertIsInstance(algorithm(), Algorithm)
@@ -48,20 +47,6 @@ class TestAlgorithms(unittest.TestCase):
                 actual = alg.findall(test.substring, test.text)
                 self.assertEqual(actual, test.expected,
                                  f'Error in {test.name} with {alg.name()}')
-
-    def test_big_file_corona(self):
-        path = 'test texts/coronavirus.txt'
-        for alg in ALGORITHMS:
-            with resource_stream(__name__, path) as file:
-                text_io = io.StringIO(file.read().decode('utf-8'))
-                actual = alg.big_findall(text_io, 'ACAATTAATTGCCAGGAACCTAA')
-                self.assertEqual(actual, [28553], f'Error in {alg}')
-
-    def test_big_fail(self):
-        for alg in ALGORITHMS:
-            text_io = 'covid'
-            actual = alg.big_findall(text_io, 'ACAATTAATTGCCAGGAACCTAA')
-            self.assertEqual(actual, [], f'Error in {alg}')
 
 
 if __name__ == '__main__':
