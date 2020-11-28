@@ -3,7 +3,6 @@ import unittest
 from pkg_resources import resource_stream
 from algorithms import ALGORITHMS
 from algorithms.algorithm import Algorithm
-import io
 
 
 TestData = namedtuple('TestData', ['name', 'text', 'substring', 'expected'])
