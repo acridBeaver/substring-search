@@ -6,3 +6,4 @@ __pycache__
 *.ipynb
 *.pickle
 *.xlsx
+.DS_Store
