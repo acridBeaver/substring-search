@@ -1,10 +1,9 @@
 from tests.algorithm_test import TESTS
 from algorithms import ALGORITHMS
-from timeit import timeit
 import matplotlib.pyplot as plt
-import numpy as np
-from memory_profiler import memory_usage
+import time
 import argparse
+import tracemalloc
 
 
 class Benchmark:
@@ -20,24 +19,27 @@ class Benchmark:
             self.test_mem[test.name] = {alg.name(): [] for alg in ALGORITHMS}
 
     def run(self):
-        start_mem = np.mean(memory_usage())
-        execute = 'alg.search(test.substring, test.text)'
-        for alg in ALGORITHMS:
-            for test in self.tests:
-                memory_expression = (alg.search, (test.substring, test.text))
+        for test in self.tests:
+            print('__________TEST__________' + test.name)
+            for alg in ALGORITHMS:
+                print(alg.name())
                 for i in range(self.n_times):
-                    self.test_time[test.name][alg.name()].append(
-                        timeit(execute, globals=locals(), number=1))
-                    self.test_mem[test.name][alg.name()].append(
-                        max(memory_usage(memory_expression)) - start_mem)
+                    tracemalloc.start()
+                    start_time = int(round(time.time() * 1000))
+                    alg.findall(test.substring, test.text)
+                    timer = int(round(time.time() * 1000)) - start_time
+                    mem = tracemalloc.get_traced_memory()[1]
+                    tracemalloc.stop()
+                    self.test_time[test.name][alg.name()].append(timer)
+                    self.test_mem[test.name][alg.name()].append(mem)
 
-    def report(self, name: str, samples, scale: str, pow=1e5):
+    def report(self, name: str, samples, scale: str):
         data = self.test_time
-        figure, axises = plt.subplots(len(data), figsize=(15, 40))
+        figure, axises = plt.subplots(len(data), figsize=(30, 90))
         for i, test in enumerate(data):
             for alg in data[test]:
                 x_arr = range(len(samples[test][alg]))
-                y_arr = list(map(lambda x: x * pow, samples[test][alg]))
+                y_arr = list(map(lambda x: x, samples[test][alg]))
 
                 axises[i].scatter(x_arr, y_arr, label=alg)
                 axises[i].set_title(test)
@@ -61,4 +63,4 @@ if __name__ == '__main__':
 
     if args.report:
         benchmark.report('results_time.png', benchmark.test_time, 'time')
-        benchmark.report('results_mem.png', benchmark.test_mem, 'memory', pow=1)
+        benchmark.report('results_mem.png', benchmark.test_mem, 'memory')
