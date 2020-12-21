@@ -44,7 +44,7 @@ class BoyerMooreSearch(Algorithm):
             for j in range(len(substring)):
                 left_edge = len(substring) - i
                 window = len(sub) - j
-                if BoyerMooreSearch.same(substring[left_edge:], sub[window - i: window]) \
+                if cls.same(substring[left_edge:], sub[window - i: window]) \
                         and substring[left_edge - 1] != sub[window - i - 1]:
                     break
             shift_arr[i] = min(len(substring), j)
