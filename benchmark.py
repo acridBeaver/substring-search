@@ -25,9 +25,9 @@ class Benchmark:
                 print(alg.name())
                 for i in range(self.n_times):
                     tracemalloc.start()
-                    start_time = int(round(time.time() * 1000))
+                    first_time = time.time()
                     alg.findall(test.substring, test.text)
-                    timer = int(round(time.time() * 1000)) - start_time
+                    timer = int((time.time() - first_time) * 1000)
                     mem = tracemalloc.get_traced_memory()[1]
                     tracemalloc.stop()
                     self.test_time[test.name][alg.name()].append(timer)
@@ -41,7 +41,7 @@ class Benchmark:
                 x_arr = range(len(samples[test][alg]))
                 y_arr = list(map(lambda x: x, samples[test][alg]))
 
-                axises[i].scatter(x_arr, y_arr, label=alg)
+                axises[i].plot(x_arr, y_arr, label=alg)
                 axises[i].set_title(test)
                 axises[i].set_xlabel('runs')
                 axises[i].set_ylabel(scale)
@@ -59,7 +59,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     benchmark = Benchmark(args.N)
+    start_time = int(round(time.time()))
     benchmark.run()
+    finish_time = int(round(time.time()))
+    print(f'Benchmark ends in {finish_time - start_time} seconds')
 
     if args.report:
         benchmark.report('results_time.png', benchmark.test_time, 'time')

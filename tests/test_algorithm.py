@@ -44,8 +44,9 @@ class TestAlgorithms(unittest.TestCase):
         for test in TESTS:
             for alg in ALGORITHMS:
                 actual = alg.findall(test.substring, test.text)
-                self.assertEqual(actual, test.expected,
-                                 f'Error in {test.name} with {alg.name()}')
+                with self.subTest(f' {test.name} with {alg.name()}'):
+                    self.assertEqual(actual, test.expected,
+                                     f'actual: {actual}, expected: {test.expected}')
 
 
 if __name__ == '__main__':
