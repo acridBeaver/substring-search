@@ -1,4 +1,4 @@
-from tests.algorithm_test import TESTS
+from tests.test_algorithm import TESTS
 from algorithms import ALGORITHMS
 import matplotlib.pyplot as plt
 import time

@@ -3,31 +3,7 @@ from algorithms.algorithm import Algorithm
 ANY_LETTER = '*'
 
 
-def same(x, y):
-    for p in range(len(x)):
-        if x[p] != ANY_LETTER and y[p] != ANY_LETTER and x[p] != y[p]:
-            return False
-    return True
-
-
 class BoyerMooreSearch(Algorithm):
-
-    @staticmethod
-    def create_shift_table(substring):
-        sub = ANY_LETTER * len(substring) + substring
-        shift_arr = [len(substring)] * len(substring)
-        shift_arr[0] = 1
-        j = 0
-        for i in range(len(substring)):
-            for j in range(len(substring)):
-                left_edge = len(substring) - i
-                window = len(sub) - j
-                if same(substring[left_edge:], sub[window - i: window]) \
-                        and substring[left_edge - 1] != sub[window - i - 1]:
-                    break
-            shift_arr[i] = min(len(substring), j)
-
-        return shift_arr
 
     @staticmethod
     def search(substring, text):
@@ -57,3 +33,27 @@ class BoyerMooreSearch(Algorithm):
             if max(step_stop, step_shift) > 1:
                 i += max(step_stop, step_shift) - 1
             i += 1
+
+    @classmethod
+    def create_shift_table(cls, substring):
+        sub = ANY_LETTER * len(substring) + substring
+        shift_arr = [len(substring)] * len(substring)
+        shift_arr[0] = 1
+        j = 0
+        for i in range(len(substring)):
+            for j in range(len(substring)):
+                left_edge = len(substring) - i
+                window = len(sub) - j
+                if BoyerMooreSearch.same(substring[left_edge:], sub[window - i: window]) \
+                        and substring[left_edge - 1] != sub[window - i - 1]:
+                    break
+            shift_arr[i] = min(len(substring), j)
+
+        return shift_arr
+
+    @classmethod
+    def same(cls, x: str, y: str):
+        for p in range(len(x)):
+            if x[p] != ANY_LETTER and y[p] != ANY_LETTER and x[p] != y[p]:
+                return False
+        return True

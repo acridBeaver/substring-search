@@ -5,7 +5,7 @@ class Algorithm(ABC):
 
     @staticmethod
     @abstractmethod
-    def search(substring, text):
+    def search(substring: str, text: str):
         pass
 
     @classmethod
